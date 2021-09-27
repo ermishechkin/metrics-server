@@ -1,0 +1,31 @@
+.results-table {
+  border-collapse: collapse;
+}
+
+.results-table td,
+.results-table th {
+  border: 0.01px solid;
+  padding-left: 4px;
+  padding-right: 4px;
+  box-sizing: border-box;
+}
+
+.results-table-name {
+  min-width: 16ch;
+}
+
+.results-table-value {
+  min-width: 8ch;
+}
+
+td.results-table-value {
+  text-align: right;
+}
+
+.results-table-nocell {
+  text-align: center;
+}
+
+.form-ref {
+  margin: 16px 0;
+}

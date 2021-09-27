@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "form-ref.html" as formref with context %}
+
+{% block scripts %}
+<script>
+function goto_results_branch() {
+  const el = document.getElementById("branch-input");
+  goto("/results/" + encodeURIComponent(el.value));
+  event.preventDefault();
+}
+
+function goto_results_commit() {
+  const el = document.getElementById("commit-input");
+  goto("/results/" + encodeURIComponent(el.value));
+  event.preventDefault();
+}
+</script>
+{% endblock %}
+
+{% block body %}
+{{ formref.form('goto_results_branch', 'goto_results_commit') }}
+{% endblock %}

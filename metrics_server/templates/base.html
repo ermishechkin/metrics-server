@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', path='/base.css') }}" />
+    {% block styles %}{% endblock %}
+    <title>{{ title }}</title>
+    <script>
+      const BASE_URL = "{{ base_url }}";
+      function goto(rel_url) {
+        window.location = BASE_URL + rel_url;
+      }
+    </script>
+    {% block scripts %}{% endblock %}
+  </head>
+  <body>
+    <div class="nav-top">
+      <a class="nav-home-link" href="{{ url_for('web_index') }}">Home</a>
+      {% if user is not none %}
+        <span class="nav-logged-as">
+          logged in as
+          <span class="nav-username">{{ user }}</span>
+        </span>
+        <a class="nav-logout-link" href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
+    </div>
+    {% if user is not none %}
+      {% block body %}{% endblock %}
+    {% else %}
+      <h3>Login</h3>
+      <form action="{{ url_for('login_via_oauth') }}">
+        <input type="submit" value="Login with OAuth">
+      </form>
+    {% endif %}
+  </body>
+</html>

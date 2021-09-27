@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import "form-ref.html" as formref with context %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', path='/compare.css') }}" />
+{% endblock %}
+
+{% block body %}
+  <h3>Comparison</h3>
+  <table class="compare-table">
+    <tr>
+      <th class="compare-table-name"></th>
+      <th class="compare-table-value">
+        <a href="{{ url_for('web_results_ref', ref=main_ref) }}">
+          {{ main_ref }}
+        </a>
+      </th>
+      {% for ref_name in to_metrics %}
+        <th class="compare-table-value">
+          <a href="{{ url_for('web_results_ref', ref=ref_name) }}">
+            {{ ref_name }}
+          </a>
+        </th>
+      {% endfor %}
+    </tr>
+    {% if metrics_names %}
+      {% for metric_name in metrics_names %}
+      <tr>
+        <th class="compare-table-name">{{ metric_name }}</td>
+        <td class="compare-table-value">
+          {{ main_metrics.metrics.get(metric_name, '') }}
+        </td>
+        {% for metrics in to_metrics.values() %}
+          <td class="compare-table-value">
+            {{ metrics.metrics.get(metric_name, '') }}
+          </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    {% else %}
+      <tr>
+        <td class="compare-table-nocell" colspan="{{ to_metrics|length + 2 }}">
+          No metrics
+        </td>
+      </tr>
+    {% endif %}
+  </table>
+{% endblock %}

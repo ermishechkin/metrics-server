@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% import "form-ref.html" as formref with context %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', path='/results.css') }}" />
+{% endblock %}
+
+{% block scripts %}
+<script>
+const BASE_REF="{{ ref }}";
+
+function goto_compare_branch() {
+  const el = document.getElementById("branch-input");
+  goto("/compare/" + encodeURIComponent(BASE_REF) +
+    "?to=" + encodeURIComponent(el.value));
+  event.preventDefault();
+}
+
+function goto_compare_commit() {
+  const el = document.getElementById("commit-input");
+  goto("/compare/" + encodeURIComponent(BASE_REF) +
+    "?to=" + encodeURIComponent(el.value));
+  event.preventDefault();
+}
+</script>
+{% endblock %}
+
+{% block body %}
+  <h3>{{ ref }}</h3>
+  {% if valid_ref %}
+    <table class="results-table">
+      <tr>
+        <th class="results-table-name">Name</th>
+        <th class="results-table-value">Value</th>
+      </tr>
+      {% if metrics %}
+        {% for name, value in metrics.items() %}
+        <tr>
+          <td class="results-table-name">{{ name }}</td>
+          <td class="results-table-value">{{ value }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td class="results-table-nocell" colspan="2">No metrics</td>
+        </tr>
+      {% endif %}
+    </table>
+
+    <div class="form-ref">
+      <div class="form-ref-line"><span>Compare with</span></div>
+      {{ formref.form_inner('goto_compare_branch', 'goto_compare_commit') }}
+    </div>
+  {% else %}
+    <h4>Invalid ref</h4>
+  {% endif %}
+{% endblock %}

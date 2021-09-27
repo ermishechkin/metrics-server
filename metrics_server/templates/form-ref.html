@@ -1,0 +1,46 @@
+{% macro form(branch_click, commit_click) -%}
+<div class="form-ref">
+  <div class="form-ref-line"><span>Select</span></div>
+  <div class="form-ref-line">
+    <form onsubmit="{{ branch_click }}()">
+      <span class="form-ref-label">branch</span>
+      <select class="form-ref-input" id="branch-input">
+        {% for branch in branches %}
+        <option value="{{ branch }}">{{ branch }}</option>
+        {% endfor %}
+      </select>
+      <input class="form-ref-submit" type="submit" value=">" />
+    </form>
+  </div>
+  <div class="form-ref-line"><span class="form-ref-label">or</span></div>
+  <div class="form-ref-line">
+    <form onsubmit="{{ commit_click }}()">
+      <span class="form-ref-label">commit</span>
+      <input class="form-ref-input" id="commit-input" />
+      <input class="form-ref-submit" type="submit" value=">" />
+    </form>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro form_inner(branch_click, commit_click) -%}
+<div class="form-ref-line">
+  <form onsubmit="{{ branch_click }}()">
+    <span class="form-ref-label">branch</span>
+    <select class="form-ref-input" id="branch-input">
+      {% for branch in branches %}
+      <option value="{{ branch }}">{{ branch }}</option>
+      {% endfor %}
+    </select>
+    <input class="form-ref-submit" type="submit" value=">" />
+  </form>
+</div>
+<div class="form-ref-line"><span class="form-ref-label">or</span></div>
+<div class="form-ref-line">
+  <form onsubmit="{{ commit_click }}()">
+    <span class="form-ref-label">commit</span>
+    <input class="form-ref-input" id="commit-input" />
+    <input class="form-ref-submit" type="submit" value=">" />
+  </form>
+</div>
+{%- endmacro %}

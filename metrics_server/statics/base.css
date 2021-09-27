@@ -1,0 +1,40 @@
+.nav-top {
+  display: flex;
+  border-bottom: 0.01px solid lightgray;
+  padding-bottom: 2px;
+  margin-bottom: 8px;
+}
+
+.nav-home-link {
+  margin-right: auto;
+}
+
+.nav-logged-as {
+  margin-left: auto;
+}
+
+.nav-username {
+  font-style: italic;
+}
+
+.nav-logout-link {
+  margin-left: 1ch;
+}
+
+.form-ref-line:not(:last-child) {
+  padding-bottom: 2px;
+}
+
+.form-ref-label {
+  width: 6ch;
+  display: inline-block;
+  text-align: center;
+}
+
+.form-ref-input {
+  width: 32ch;
+  font-size: small;
+  box-sizing: border-box;
+  margin-left: 4px;
+  margin-right: 4px;
+}

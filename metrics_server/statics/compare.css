@@ -1,0 +1,27 @@
+.compare-table {
+  border-collapse: collapse;
+}
+
+.compare-table tr td,
+.compare-table tr th {
+  border: 0.01px solid;
+  padding-left: 4px;
+  padding-right: 4px;
+  box-sizing: border-box;
+}
+
+.compare-table-name {
+  min-width: 16ch;
+}
+
+.compare-table-value {
+  min-width: 8ch;
+}
+
+td.compare-table-value {
+  text-align: right;
+}
+
+.compare-table-nocell {
+  text-align: center;
+}
