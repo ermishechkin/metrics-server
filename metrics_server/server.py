@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from . import settings
+from .admin import router as admin_router
 from .api import router as api_router
 from .auth import router as auth_router
 from .session import flush_session
@@ -14,3 +16,6 @@ app.include_router(auth_router)
 app.include_router(api_router)
 app.include_router(web_router)
 app.mount('/static', statics_app, name='static')
+
+if settings.ADMIN_ENABLE:
+    app.include_router(admin_router)

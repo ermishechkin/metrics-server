@@ -66,6 +66,21 @@ def get_session(request: Request) -> Session:
     return value
 
 
+def get_session_by_id(sid: str) -> Optional[Session]:
+    raw_value = sessions_storage.get(sid)
+    if raw_value is None:
+        return None
+    dbval = _SessionInternal(**json.loads(raw_value))
+    return Session.from_storage(dbval)
+
+
+def set_session(user: str, expired_in: int) -> str:
+    sid = secrets.token_hex(16)
+    dbval = _SessionInternal(u=user, e=expired_in, o={})
+    sessions_storage.set(sid, json.dumps(asdict(dbval)))
+    return sid
+
+
 async def flush_session(
     request: Request,
     call_next: Callable[[Request], Awaitable[Response]],
