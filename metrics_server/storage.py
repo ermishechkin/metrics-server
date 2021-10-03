@@ -1,4 +1,5 @@
 from os import makedirs, path, remove
+from re import compile
 from sqlite3 import connect
 from typing import Any, Optional
 
@@ -23,6 +24,7 @@ class FolderStorage(BaseStorage):
         self._subdir = subdir
 
     def get(self, key: str) -> Optional[str]:
+        validate_name(key)
         try:
             with open(f'{self._subdir}/{key}', 'r') as inf:
                 return inf.read()
@@ -30,10 +32,12 @@ class FolderStorage(BaseStorage):
             return None
 
     def set(self, key: str, value: Any) -> None:
+        validate_name(key)
         with open(f'{self._subdir}/{key}', 'w') as inf:
             inf.write(str(value))
 
     def delete(self, key: str) -> None:
+        validate_name(key)
         remove(f'{self._subdir}/{key}')
 
 
@@ -48,6 +52,7 @@ class SqlStorage(BaseStorage):
                         '(key TEXT PRIMARY KEY, value TEXT)')
 
     def get(self, key: str) -> Optional[str]:
+        validate_name(key)
         cursor = self._con.cursor()
         cursor.execute('SELECT VALUE FROM table1 WHERE key=?', (key, ))
         result = cursor.fetchone()
@@ -56,11 +61,21 @@ class SqlStorage(BaseStorage):
         return result
 
     def set(self, key: str, value: Any) -> None:
+        validate_name(key)
         cursor = self._con.cursor()
         cursor.execute('REPLACE INTO table1 VALUES (?,?)', (key, value))
         self._con.commit()
 
     def delete(self, key: str) -> None:
+        validate_name(key)
         cursor = self._con.cursor()
         cursor.execute('DELETE FROM table1 WHERE key=?', (key, ))
         self._con.commit()
+
+
+_allowed_key = compile(r'[0-9A-Za-z]+')
+
+
+def validate_name(name: str) -> None:
+    if not _allowed_key.fullmatch(name):
+        raise ValueError(f'Invalid key name "{name}"')
