@@ -1,19 +1,23 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 
 from .metrics import (CommitMetrics, MetricsBody, metrics_get, metrics_list,
                       metrics_post, repo)
-from .session import get_session
+from .session import Session, get_session_with_token
 
 
-def valid_session(request: Request):
-    session = get_session(request)
-    if session.state != 'normal':
+def valid_session_with_token(
+        session: Optional[Session] = Depends(get_session_with_token)):
+    if session is None:
         raise HTTPException(status_code=403)
+    return session
 
 
-router = APIRouter(prefix='/api', dependencies=[Depends(valid_session)])
+router = APIRouter(
+    prefix='/api',
+    dependencies=[Depends(valid_session_with_token)],
+)
 
 REF_NOT_FOUND_MSG = 'ref not found'
 

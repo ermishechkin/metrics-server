@@ -50,6 +50,24 @@ def create_session() -> Tuple[str, Session]:
     return sid, Session.from_storage(dbval)
 
 
+def get_session_with_token(request: Request,
+                           token: Optional[str] = None) -> Optional[Session]:
+    if token is not None:
+        token_session = get_session_by_id(token)
+        if token_session is not None and token_session.state == 'normal':
+            return token_session
+
+    sid = request.cookies.get(settings.SESSION_COOKIE)
+    if sid is None:
+        return None
+
+    cookie_session = get_session_by_id(sid)
+    if cookie_session is not None and cookie_session.state == 'normal':
+        return cookie_session
+
+    return None
+
+
 def get_session(request: Request) -> Session:
     sid = request.cookies.get(settings.SESSION_COOKIE)
 
